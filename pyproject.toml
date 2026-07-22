@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logaudit"
+version = "1.0.0"
+description = "Zero-dependency CLI for JSONL/log validation, deterministic reports, and regression gates."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Midat Faizov", email = "midat.faizov@gmail.com" }]
+keywords = ["logs", "jsonl", "validation", "observability", "cli", "regression-testing"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: System :: Logging",
+  "Topic :: Utilities",
+]
+dependencies = []  # stdlib only, on purpose
+
+[project.urls]
+Homepage = "https://github.com/midat-fx/jsonl-log-auditor"
+Issues = "https://github.com/midat-fx/jsonl-log-auditor/issues"
+
+[project.scripts]
+logaudit = "logaudit.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "mypy>=1.8", "ruff>=0.4", "coverage>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+logaudit = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
