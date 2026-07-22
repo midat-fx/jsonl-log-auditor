@@ -84,3 +84,14 @@ def test_error_reports_position() -> None:
     with pytest.raises(QueryError) as ei:
         compile_query("level=ERROR AND ")
     assert "end of query" in str(ei.value)
+
+
+def test_invalid_regex_is_clean_parse_error() -> None:
+    with pytest.raises(QueryError) as ei:
+        compile_query('msg=~"["')  # unbalanced character class
+    assert "invalid regex" in str(ei.value)
+
+
+def test_regex_operator_matches() -> None:
+    assert m('code=~"^5"', {"code": 503})
+    assert not m('code=~"^4"', {"code": 503})

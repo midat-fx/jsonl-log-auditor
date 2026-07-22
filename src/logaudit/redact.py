@@ -31,7 +31,13 @@ def build_redactor(
     key: bytes, patterns: dict[str, str] | None = None
 ) -> list[tuple[str, re.Pattern[str]]]:
     pats = patterns if patterns is not None else DEFAULT_PATTERNS
-    return [(name, re.compile(rx)) for name, rx in sorted(pats.items())]
+    compiled: list[tuple[str, re.Pattern[str]]] = []
+    for name, rx in sorted(pats.items()):
+        try:
+            compiled.append((name, re.compile(rx)))
+        except re.error as e:
+            raise ValueError(f"invalid redaction pattern {name!r}: {e}") from e
+    return compiled
 
 
 def redact_text(text: str, key: bytes, rules: list[tuple[str, re.Pattern[str]]]) -> str:

@@ -182,6 +182,13 @@ class _Parser:
             value = val.value
         else:
             raise QueryError(f"expected a value at position {val.pos}, got {val.value!r}")
+        if op.value == "=~":
+            # Compile once, here, so an invalid regex is a clean parse error rather
+            # than a traceback mid-scan, and it is not recompiled per record.
+            try:
+                value = re.compile(str(value))
+            except re.error as e:
+                raise QueryError(f"invalid regex {value!r} at position {val.pos}: {e}") from e
         return Cmp(field.value, op.value, value)
 
 
@@ -213,7 +220,10 @@ def _as_num(x: Any) -> float | None:
 
 def _compare(recval: Any, op: str, literal: Any) -> bool:
     if op == "=~":
-        return recval is not None and re.search(str(literal), str(recval)) is not None
+        if recval is None:
+            return False
+        pattern = literal if isinstance(literal, re.Pattern) else re.compile(str(literal))
+        return pattern.search(str(recval)) is not None
     if recval is None:
         return op == "!="
     ln, rn = _as_num(recval), _as_num(literal)

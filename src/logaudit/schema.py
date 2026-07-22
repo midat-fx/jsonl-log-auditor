@@ -43,8 +43,14 @@ def _check_property(name: str, value: Any, spec: dict[str, Any]) -> list[str]:
             return out  # further checks assume the right type
     if "enum" in spec and value not in spec["enum"]:
         out.append(f"{name}: value {value!r} not in enum {spec['enum']}")
-    if "pattern" in spec and isinstance(value, str) and not re.search(spec["pattern"], value):
-        out.append(f"{name}: value {value!r} does not match pattern {spec['pattern']}")
+    if "pattern" in spec and isinstance(value, str):
+        try:
+            matched = re.search(spec["pattern"], value) is not None
+        except re.error as e:
+            out.append(f"{name}: schema has an invalid pattern {spec['pattern']!r} ({e})")
+        else:
+            if not matched:
+                out.append(f"{name}: value {value!r} does not match pattern {spec['pattern']}")
     fmt = spec.get("format")
     if fmt and isinstance(value, str):
         rx = _FORMATS.get(fmt)
