@@ -1,0 +1,80 @@
+{
+  "by_hour": {
+    "2026-01-01T00": 515,
+    "2026-01-01T01": 514,
+    "2026-01-01T02": 471
+  },
+  "codes_top": [
+    [
+      "200",
+      1219
+    ],
+    [
+      "301",
+      63
+    ],
+    [
+      "429",
+      62
+    ],
+    [
+      "404",
+      45
+    ],
+    [
+      "503",
+      39
+    ],
+    [
+      "500",
+      38
+    ],
+    [
+      "502",
+      34
+    ]
+  ],
+  "levels": {
+    "ERROR": 111,
+    "INFO": 1219,
+    "WARN": 170
+  },
+  "services": {
+    "api": {
+      "count": 361,
+      "error_rate": 0.08,
+      "errors": 29,
+      "latency_p50": 64.8,
+      "latency_p95": 130.2,
+      "latency_p99": 156.9
+    },
+    "auth": {
+      "count": 382,
+      "error_rate": 0.05,
+      "errors": 21,
+      "latency_p50": 68.9,
+      "latency_p95": 129.2,
+      "latency_p99": 171.5
+    },
+    "web": {
+      "count": 372,
+      "error_rate": 0.07,
+      "errors": 25,
+      "latency_p50": 62.8,
+      "latency_p95": 134.2,
+      "latency_p99": 162.1
+    },
+    "worker": {
+      "count": 385,
+      "error_rate": 0.09,
+      "errors": 36,
+      "latency_p50": 205.8,
+      "latency_p95": 273.7,
+      "latency_p99": 295.9
+    }
+  },
+  "totals": {
+    "malformed": 0,
+    "records": 1500
+  }
+}
